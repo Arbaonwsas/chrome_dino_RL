@@ -5,7 +5,10 @@ abs_path = os.path.dirname(__file__)
 args = {
 
     # env setting
-    "game_url": "http://www.aboutsamyuen.com/projects/chrome_dino_js/index.html",
+    # The original page (http://www.aboutsamyuen.com/projects/chrome_dino_js/index.html)
+    # no longer resolves. The same Runner JS API is now vendored in ./game and
+    # served locally by run.sh (see game/VENDORED.md). PORT must match run.sh.
+    "game_url": "http://127.0.0.1:8765/index.html",
     "chrome_driver_path": "/usr/lib/chromium-browser/chromedriver",
     "train": 'test', # 'train', 'test'
     "init_script": "document.getElementsByClassName('runner-canvas')[0].id = 'runner-canvas'", #create id for canvas for faster selection from DOM
