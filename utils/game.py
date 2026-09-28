@@ -118,4 +118,10 @@ class Game():
         return self.driver.execute_script("return Runner.instance_.play()")
 
     def end(self):
-        self.driver.close()
+        # close() only closes the current tab; it leaves the browser and the
+        # chromedriver child process running. test_agent() is called every
+        # TEST_EVERY episodes, so a long training run used to pile up one
+        # headless Chrome per test -- 100 of them with the shipped config
+        # (EPISODE=5000, TEST_EVERY=50). quit() shuts the browser down and
+        # terminates the driver service.
+        self.driver.quit()
