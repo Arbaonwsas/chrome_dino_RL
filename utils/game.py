@@ -9,8 +9,9 @@ import numpy as np
 import cv2
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 import copy
+import os
 
 class Game():
     def __init__(self, game_url, chrome_driver_path, init_script, cam_visualization=False):
@@ -22,7 +23,18 @@ class Game():
         chrome_options.add_argument("disable-infobars")
         chrome_options.add_argument("--mute-audio")
         # self.driver = webdriver.Chrome(executable_path=chrome_driver_path, options=chrome_options)
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+        # ChromeDriverManager() queries chromedriver.storage.googleapis.com, which
+        # Google froze at 114.0.5735.90 when Chrome for Testing launched. For a
+        # current Chrome that endpoint answers 404 (or hands back a Chrome 114
+        # driver), so the session never starts. Prefer a driver fetched locally by
+        # scripts/get_chromedriver.sh and otherwise let Selenium Manager resolve it.
+        local_driver = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                    'drivers', 'chromedriver')
+        if os.path.isfile(local_driver):
+            self.driver = webdriver.Chrome(service=Service(executable_path=local_driver),
+                                           options=chrome_options)
+        else:
+            self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.set_window_position(x=-10,y=0)
         # print(self.driver.get_window_size()) # print the size of browser
         self.driver.set_window_size(1450, 1080)
