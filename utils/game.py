@@ -8,6 +8,7 @@ import base64
 import numpy as np
 import cv2
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 import copy
@@ -100,10 +101,10 @@ class Game():
         self.driver.execute_script("Runner.instance_.restart()")
 
     def press_up(self):
-        self.driver.find_element_by_tag_name("body").send_keys(Keys.ARROW_UP)
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_UP)
 
     def press_down(self):
-        self.driver.find_element_by_tag_name("body").send_keys(Keys.ARROW_DOWN)
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_DOWN)
 
     def get_score(self):
         score_array = self.driver.execute_script("return Runner.instance_.distanceMeter.digits")
