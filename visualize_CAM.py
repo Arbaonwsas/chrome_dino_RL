@@ -27,7 +27,7 @@ if __name__=="__main__":
     args = parse_args()
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    agent = torch.load(args.checkpoint, map_location=device)
+    agent = torch.load(args.checkpoint, map_location=device, weights_only=False)
     with open('./test_states/dino_states7.pickle', 'rb') as f:
         pkl = pickle.load(f)
         states, actions = pkl['states'], pkl['actions']

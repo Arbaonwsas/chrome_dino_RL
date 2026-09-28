@@ -66,7 +66,7 @@ def load_obj(name):
 
 def export_onxx(checkpoint):
     ''' Export model as onxx format for deployment '''
-    pytorch_model = torch.load(checkpoint, map_location=torch.device('cpu'))
+    pytorch_model = torch.load(checkpoint, map_location=torch.device('cpu'), weights_only=False)
 
     class add_argmax(nn.Module):
         def __init__(self, model):

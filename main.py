@@ -70,7 +70,7 @@ if __name__ == '__main__':
     else: # continue training a model or ask the agent to play
         print ("Now we load weight")
         #DQN_agent.load_weights(args.checkpoint) # load the model to continue training or play
-        agent = torch.load(args.checkpoint, map_location=device)
+        agent = torch.load(args.checkpoint, map_location=device, weights_only=False)
         print ("Weight load successfully")
     
     # init_cache() above only runs in 'train' mode, but set_up is read in every
