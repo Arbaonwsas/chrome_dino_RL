@@ -73,7 +73,15 @@ if __name__ == '__main__':
         agent = torch.load(args.checkpoint, map_location=device)
         print ("Weight load successfully")
     
-    set_up = load_obj("set_up")
+    # init_cache() above only runs in 'train' mode, but set_up is read in every
+    # mode. result/ is listed in .gitignore, so a fresh clone has no
+    # result/set_up.pkl and the read below used to raise FileNotFoundError
+    # before the agent ever got to play. Create the default state on demand.
+    try:
+        set_up = load_obj("set_up")
+    except FileNotFoundError:
+        init_cache(args.INITIAL_EPSILON, args.REPLAY_MEMORY, args.prioritized_replay)
+        set_up = load_obj("set_up")
     epsilon, step, Deque, highest_score = set_up['epsilon'], set_up['step'], set_up['D'], set_up['highest_score']
     OBSERVE = args.OBSERVATION
     if args.train == 'test':
